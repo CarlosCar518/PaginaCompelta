@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adoptar - Lucifer Sam</title>
+    <link href="tooplate-minimal-white-style.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <form id="form-compra" action="/complete" method="POST">
+        <h1>Detalles de pedido</h1>
+
+        <label for="Mascota">Mascota: </label>
+        <select name="Mascota" id="Mascota">
+            <option value="" disabled selected>Seleccione una Mascota</option>
+            <option th:each="mascota : ${mascotaList}"
+                    th:value="${mascota.id}"
+                    th:name="${mascota.nombre}"
+                    th:type="${mascota.tipo}"
+                    th:text="${mascota.nombre} + ' (' + ${mascota.tipo} + ')'"></option>
+        </select>
+
+        <div id="mascota-img-container">
+            <img id="mascota-img-display"  src="" alt="Imagen de la Mascota" style="max-width: 200px; max-height: 200px; margin-top: 15px;">
+        </div>
+
+        <h2>Añadir Accesorios</h2>
+        <div id="add-item-section">
+            <label for="AccesorioSelect">Accesorio: </label>
+            <select name="AccesorioSelect" id="AccesorioSelect">
+                <option value="0" th:data-precio="0" disabled selected>Seleccione un accesorio</option>
+                <option th:each=" accesorio : ${accesorioList}"
+                        th:text="${accesorio.nombre}"
+                        th:data-precio="${accesorio.precio}"
+                        th:cantidad="${accesorio.cantidad}"
+                        th:data-nombre="${accesorio.nombre}"></option> </select>
+
+            <label for="CantidadInput">Cantidad</label>
+            <input type="number" name="CantidadInput" id="CantidadInput" value="1" min="1">
+
+            <button type="button" id="btn-add-item">Añadir al Pedido</button>
+
+            <p>Stock Disponible: <span id="stock-display"></span> </p>
+            <p>Precio: <span id="Precio-diplay">0</span> </p>
+
+
+        </div>
+
+        <h2>Resumen del Pedido</h2>
+        <table id="cart-table">
+            <thead>
+            <tr>
+                <th>Accesorio</th>
+                <th>Cant.</th>
+                <th>P. Unitario</th>
+                <th>Subtotal</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="3"><strong>TOTAL</strong></td>
+                <td id="cart-total-display"><strong>$0.00</strong></td>
+                <td></td>
+            </tr>
+            </tfoot>
+        </table>
+
+        <input type="hidden" name="itemsJson" id="items-json-input">
+
+        <button type="submit" id="confirmBut">Confirmar Pedido</button>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+
+            const selectAccesorio = document.getElementById('AccesorioSelect');
+            const inputCantidad = document.getElementById('CantidadInput');
+            const btnAddItem = document.getElementById('btn-add-item');
+            const cartTableBody = document.querySelector('#cart-table tbody');
+            const cartTotalDisplay = document.getElementById('cart-total-display');
+            const formCompra = document.getElementById('form-compra');
+            const itemsJsonInput = document.getElementById('items-json-input');
+            const precioDisplay = document.getElementById('Precio-diplay');
+
+            const selectMascota = document.getElementById('Mascota');
+
+            const submitBtn = document.getElementById('confirmBut');
+
+
+
+            let itemsCarrito = [];
+
+
+            const updateCartData = () => {
+                let total = 0;
+                cartTableBody.innerHTML = ''; // Limpiar la tabla
+
+                itemsCarrito.forEach((item, index) => {
+                    const subtotal = item.precioUnitario * item.cantidad;
+                    total += subtotal;
+
+                    // Crear fila de la tabla
+                    const row = cartTableBody.insertRow();
+                    row.innerHTML = `
+                    <td>${item.nombre}</td>
+                    <td>${item.cantidad}</td>
+                    <td>$${item.precioUnitario.toFixed(2)}</td>
+                    <td>$${subtotal.toFixed(2)}</td>
+                    <td><button type="button" class="btn-remove" data-index="${index}">X</button></td>
+                `;
+                });
+
+                // Actualizar el total y el campo oculto
+                cartTotalDisplay.textContent = `$${total.toFixed(2)}`;
+                itemsJsonInput.value = JSON.stringify(itemsCarrito);
+            };
+
+            const updatePrecioTotalStock = () => {
+
+                const cantidad = inputCantidad.value;
+                const selectedOption = selectAccesorio.options[selectAccesorio.selectedIndex];
+                precioDisplay.textContent = `$${(parseInt(selectedOption.getAttribute('data-precio'))) * cantidad}`;
+
+
+                document.getElementById('stock-display').textContent = selectedOption.getAttribute('cantidad');
+            }
+
+            const updateImageMascota = () => {
+                const display = document.getElementById('mascota-img-display');
+                const selectedMascota = selectMascota.options[selectMascota.selectedIndex];
+
+                display.src = "images/mascotas/"+ selectedMascota.value + ".jpg";
+            }
+
+            const addItemToCart = () => {
+                const selectedOption = selectAccesorio.options[selectAccesorio.selectedIndex];
+                const accesorioId = selectedOption.value;
+                const nombre = selectedOption.getAttribute('th:data-nombre') || selectedOption.getAttribute('data-nombre');
+                const precioUnitario = parseFloat(selectedOption.getAttribute('data-precio'));
+                const cantidad = parseInt(inputCantidad.value);
+                const stock = parseInt(selectedOption.getAttribute('cantidad'));
+
+                // 1. Validaciones
+                if (accesorioId === '0' || isNaN(cantidad) || cantidad <= 0 || stock < cantidad) {
+                    alert('Seleccione un accesorio y una cantidad válida.');
+                    return;
+                }
+
+
+                // 2. Comprobar si ya existe el accesorio para actualizar la cantidad
+                const existingItemIndex = itemsCarrito.findIndex(item => item.id === accesorioId);
+
+                if (existingItemIndex !== -1) {
+                    itemsCarrito[existingItemIndex].cantidad += cantidad;
+                } else {
+                    itemsCarrito.push({
+                        id: accesorioId,
+                        nombre: nombre,
+                        precioUnitario: precioUnitario,
+                        cantidad: cantidad
+                    });
+                }
+
+                // 3. Recalcular y actualizar la vista
+                updateCartData();
+            };
+
+            const addMascotaCar = () => {
+                const selectedMascota = selectMascota.options[selectMascota.selectedIndex];
+
+                itemsCarrito.push({
+                    id: selectedMascota.value,
+                    nombre: selectedMascota.getAttribute('name'),
+                    tipo: selectedMascota.getAttribute('tipo'),
+                })
+            }
+
+            // --- Event Listeners ---
+
+            // Botón Añadir: Agregar artículo al carrito
+            btnAddItem.addEventListener('click', addItemToCart);
+
+            // Remover artículo del carrito
+            cartTableBody.addEventListener('click', function(e) {
+                if (e.target.classList.contains('btn-remove')) {
+                    const indexToRemove = e.target.getAttribute('data-index');
+                    itemsCarrito.splice(indexToRemove, 1);
+                    updateCartData();
+                }
+            });
+
+            // Capturar el envío del formulario para asegurar que el campo oculto esté listo
+            formCompra.addEventListener('submit', function(e) {
+                if (itemsCarrito.length === 0) {
+                    alert("El carrito está vacío. Añade al menos un accesorio.");
+                    e.preventDefault(); // Detener el envío
+                }
+                // Si hay items, itemsJsonInput.value ya fue actualizado en updateCartData
+            });
+
+            // Inicializar
+
+            selectAccesorio.addEventListener('change', updatePrecioTotalStock);
+            selectMascota.addEventListener('change', updateImageMascota);
+
+            submitBtn.addEventListener('click', addMascotaCar);
+
+            inputCantidad.addEventListener('input', updatePrecioTotalStock);
+            updateCartData();
+        });
+    </script>
+</body>
+
+</html>
