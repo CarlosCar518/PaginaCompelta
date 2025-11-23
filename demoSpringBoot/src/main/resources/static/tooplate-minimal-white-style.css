@@ -3093,14 +3093,6 @@ footer p {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
 }
 
-.accessory-card:hover {
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-}
-
-.accessory-card img {
-    transition: transform 0.3s ease;
-}
-
 .accessory-card:hover img {
     transform: scale(1.05);
 }
@@ -3116,4 +3108,380 @@ footer p {
 .submit-button:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(0, 154, 255, 0.3);
+}
+
+/* ========================================
+   ADOPTAR PAGE STYLES (CSS ONLY)
+   ======================================== */
+
+/* Form Container */
+#form-compra {
+    max-width: 900px;
+    margin: 80px auto;
+    padding: 60px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 154, 255, 0.15);
+    backdrop-filter: blur(10px);
+}
+
+/* Headers */
+#form-compra h1 {
+    font-size: clamp(36px, 5vw, 48px);
+    font-weight: 100;
+    letter-spacing: -2px;
+    color: #009aff;
+    text-align: center;
+    margin-bottom: 50px;
+    position: relative;
+    padding-bottom: 20px;
+}
+
+#form-compra h1::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 2px;
+    background: #009aff;
+}
+
+#form-compra h2 {
+    font-size: 24px;
+    font-weight: 300;
+    color: #009aff;
+    margin: 50px 0 30px;
+    letter-spacing: -0.5px;
+    position: relative;
+    padding-left: 20px;
+}
+
+#form-compra h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 20px;
+    background: #009aff;
+}
+
+/* Labels */
+#form-compra label {
+    display: block;
+    margin-bottom: 10px;
+    color: #009aff;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Select and Input Styling */
+#form-compra select,
+#form-compra input[type="number"] {
+    width: 100%;
+    padding: 15px 20px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(0, 154, 255, 0.2);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.95);
+    color: #333;
+    font-size: 16px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+#form-compra select:focus,
+#form-compra input[type="number"]:focus {
+    border-color: #009aff;
+    box-shadow: 0 0 0 4px rgba(0, 154, 255, 0.1);
+    background: white;
+}
+
+#form-compra select:hover,
+#form-compra input[type="number"]:hover {
+    border-color: rgba(0, 154, 255, 0.4);
+}
+
+/* Image Container */
+#mascota-img-container {
+    text-align: center;
+    margin: 30px 0 50px;
+    min-height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(0, 154, 255, 0.05) 0%, rgba(221, 240, 252, 0.3) 100%);
+    border-radius: 15px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+#mascota-img-container::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    border-top: 2px solid rgba(0, 154, 255, 0.2);
+    border-right: 2px solid rgba(0, 154, 255, 0.2);
+}
+
+#mascota-img-container::after {
+    content: '';
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 30px;
+    height: 30px;
+    border-bottom: 2px solid rgba(0, 154, 255, 0.2);
+    border-left: 2px solid rgba(0, 154, 255, 0.2);
+}
+
+#mascota-img-display {
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    max-width: 200px !important;
+    max-height: 200px !important;
+    object-fit: cover;
+}
+
+#mascota-img-display:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 32px rgba(0, 154, 255, 0.2);
+}
+
+/* Add Item Section */
+#add-item-section {
+    background: rgba(0, 154, 255, 0.03);
+    padding: 30px;
+    border-radius: 15px;
+    margin-bottom: 40px;
+    border: 1px solid rgba(0, 154, 255, 0.1);
+}
+
+#add-item-section p {
+    display: inline-block;
+    margin: 15px 20px 15px 0;
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+#add-item-section p span {
+    color: #009aff;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+/* Buttons */
+#btn-add-item {
+    display: inline-block;
+    padding: 12px 30px;
+    background: white;
+    color: #009aff;
+    border: 2px solid #009aff;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+    position: relative;
+    overflow: hidden;
+}
+
+#btn-add-item::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(0, 154, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+}
+
+#btn-add-item:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+#btn-add-item:hover {
+    background: #009aff;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 154, 255, 0.3);
+}
+
+#btn-add-item:active {
+    transform: translateY(0);
+}
+
+#confirmBut {
+    width: 100%;
+    padding: 18px;
+    background: #009aff;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 30px;
+    box-shadow: 0 6px 20px rgba(0, 154, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+#confirmBut::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #009aff, #00c6ff);
+    border-radius: 12px;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#confirmBut:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 154, 255, 0.4);
+}
+
+#confirmBut:hover::before {
+    opacity: 1;
+}
+
+#confirmBut:active {
+    transform: translateY(-1px);
+}
+
+/* Cart Table */
+#cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 30px 0;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+#cart-table thead {
+    background: linear-gradient(135deg, #009aff 0%, #0088e6 100%);
+}
+
+#cart-table th {
+    color: white;
+    padding: 18px 15px;
+    text-align: left;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 13px;
+}
+
+#cart-table td {
+    padding: 18px 15px;
+    border-bottom: 1px solid rgba(0, 154, 255, 0.1);
+    color: #555;
+    font-size: 15px;
+}
+
+#cart-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+#cart-table tbody tr:hover {
+    background-color: rgba(0, 154, 255, 0.03);
+}
+
+#cart-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+#cart-table tfoot td {
+    background: linear-gradient(135deg, rgba(0, 154, 255, 0.08) 0%, rgba(221, 240, 252, 0.3) 100%);
+    font-weight: 700;
+    color: #009aff;
+    border-top: 2px solid #009aff;
+    padding: 20px 15px;
+    font-size: 16px;
+}
+
+.btn-remove {
+    background: linear-gradient(135deg, #ff4d4d 0%, #ff3333 100%);
+    color: white;
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(255, 77, 77, 0.3);
+}
+
+.btn-remove:hover {
+    background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+    transform: scale(1.1) rotate(90deg);
+    box-shadow: 0 4px 12px rgba(255, 0, 0, 0.4);
+}
+
+.btn-remove:active {
+    transform: scale(0.95) rotate(90deg);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #form-compra {
+        margin: 40px 20px;
+        padding: 30px 20px;
+    }
+
+    #form-compra h1 {
+        font-size: 32px;
+        margin-bottom: 30px;
+    }
+
+    #form-compra h2 {
+        font-size: 20px;
+        margin: 30px 0 20px;
+    }
+
+    #add-item-section {
+        padding: 20px;
+    }
+
+    #cart-table {
+        font-size: 13px;
+    }
+
+    #cart-table th,
+    #cart-table td {
+        padding: 12px 8px;
+    }
 }

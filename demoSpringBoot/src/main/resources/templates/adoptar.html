@@ -16,27 +16,24 @@
         <label for="Mascota">Mascota: </label>
         <select name="Mascota" id="Mascota">
             <option value="" disabled selected>Seleccione una Mascota</option>
-            <option th:each="mascota : ${mascotaList}"
-                    th:value="${mascota.id}"
-                    th:name="${mascota.nombre}"
-                    th:type="${mascota.tipo}"
-                    th:text="${mascota.nombre} + ' (' + ${mascota.tipo} + ')'"></option>
+            <option th:each="mascota : ${mascotaList}" th:value="${mascota.id}" th:name="${mascota.nombre}"
+                th:type="${mascota.tipo}" th:text="${mascota.nombre} + ' (' + ${mascota.tipo} + ')'"></option>
         </select>
 
         <div id="mascota-img-container">
-            <img id="mascota-img-display"  src="" alt="Imagen de la Mascota" style="max-width: 200px; max-height: 200px; margin-top: 15px;">
+            <img id="mascota-img-display" src="" alt="Imagen de la Mascota"
+                style="max-width: 200px; max-height: 200px; margin-top: 15px;">
         </div>
 
         <h2>Añadir Accesorios</h2>
         <div id="add-item-section">
             <label for="AccesorioSelect">Accesorio: </label>
             <select name="AccesorioSelect" id="AccesorioSelect">
-                <option value="0" th:data-precio="0" disabled selected>Seleccione un accesorio</option>
-                <option th:each=" accesorio : ${accesorioList}"
-                        th:text="${accesorio.nombre}"
-                        th:data-precio="${accesorio.precio}"
-                        th:cantidad="${accesorio.cantidad}"
-                        th:data-nombre="${accesorio.nombre}"></option> </select>
+                <option value="0" th:data-precioUnitario="0" disabled selected>Seleccione un accesorio</option>
+                <option th:each=" accesorio : ${accesorioList}" th:text="${accesorio.nombre}"
+                    th:data-precioUnitario="${accesorio.precioUnitario}" th:cantidad="${accesorio.cantidad}"
+                    th:value="${accesorio.id}" th:data-nombre="${accesorio.nombre}"></option>
+            </select>
 
             <label for="CantidadInput">Cantidad</label>
             <input type="number" name="CantidadInput" id="CantidadInput" value="1" min="1">
@@ -52,22 +49,22 @@
         <h2>Resumen del Pedido</h2>
         <table id="cart-table">
             <thead>
-            <tr>
-                <th>Accesorio</th>
-                <th>Cant.</th>
-                <th>P. Unitario</th>
-                <th>Subtotal</th>
-                <th></th>
-            </tr>
+                <tr>
+                    <th>Accesorio</th>
+                    <th>Cant.</th>
+                    <th>P. Unitario</th>
+                    <th>Subtotal</th>
+                    <th></th>
+                </tr>
             </thead>
             <tbody>
             </tbody>
             <tfoot>
-            <tr>
-                <td colspan="3"><strong>TOTAL</strong></td>
-                <td id="cart-total-display"><strong>$0.00</strong></td>
-                <td></td>
-            </tr>
+                <tr>
+                    <td colspan="3"><strong>TOTAL</strong></td>
+                    <td id="cart-total-display"><strong>$0.00</strong></td>
+                    <td></td>
+                </tr>
             </tfoot>
         </table>
 
@@ -125,7 +122,7 @@
 
                 const cantidad = inputCantidad.value;
                 const selectedOption = selectAccesorio.options[selectAccesorio.selectedIndex];
-                precioDisplay.textContent = `$${(parseInt(selectedOption.getAttribute('data-precio'))) * cantidad}`;
+                precioDisplay.textContent = `$${(parseInt(selectedOption.getAttribute('data-precioUnitario'))) * cantidad}`;
 
 
                 document.getElementById('stock-display').textContent = selectedOption.getAttribute('cantidad');
@@ -135,14 +132,14 @@
                 const display = document.getElementById('mascota-img-display');
                 const selectedMascota = selectMascota.options[selectMascota.selectedIndex];
 
-                display.src = "images/mascotas/"+ selectedMascota.value + ".jpg";
+                display.src = "images/mascotas/" + selectedMascota.value + ".jpg";
             }
 
             const addItemToCart = () => {
                 const selectedOption = selectAccesorio.options[selectAccesorio.selectedIndex];
                 const accesorioId = selectedOption.value;
-                const nombre = selectedOption.getAttribute('th:data-nombre') || selectedOption.getAttribute('data-nombre');
-                const precioUnitario = parseFloat(selectedOption.getAttribute('data-precio'));
+                const nombre = selectedOption.getAttribute('data-nombre') || selectedOption.getAttribute('data-nombre');
+                const precioUnitario = parseFloat(selectedOption.getAttribute('data-precioUnitario'));
                 const cantidad = parseInt(inputCantidad.value);
                 const stock = parseInt(selectedOption.getAttribute('cantidad'));
 
@@ -171,15 +168,6 @@
                 updateCartData();
             };
 
-            const addMascotaCar = () => {
-                const selectedMascota = selectMascota.options[selectMascota.selectedIndex];
-
-                itemsCarrito.push({
-                    id: selectedMascota.value,
-                    nombre: selectedMascota.getAttribute('name'),
-                    tipo: selectedMascota.getAttribute('tipo'),
-                })
-            }
 
             // --- Event Listeners ---
 
@@ -187,7 +175,7 @@
             btnAddItem.addEventListener('click', addItemToCart);
 
             // Remover artículo del carrito
-            cartTableBody.addEventListener('click', function(e) {
+            cartTableBody.addEventListener('click', function (e) {
                 if (e.target.classList.contains('btn-remove')) {
                     const indexToRemove = e.target.getAttribute('data-index');
                     itemsCarrito.splice(indexToRemove, 1);
@@ -196,7 +184,7 @@
             });
 
             // Capturar el envío del formulario para asegurar que el campo oculto esté listo
-            formCompra.addEventListener('submit', function(e) {
+            formCompra.addEventListener('submit', function (e) {
                 if (itemsCarrito.length === 0) {
                     alert("El carrito está vacío. Añade al menos un accesorio.");
                     e.preventDefault(); // Detener el envío
@@ -208,8 +196,6 @@
 
             selectAccesorio.addEventListener('change', updatePrecioTotalStock);
             selectMascota.addEventListener('change', updateImageMascota);
-
-            submitBtn.addEventListener('click', addMascotaCar);
 
             inputCantidad.addEventListener('input', updatePrecioTotalStock);
             updateCartData();

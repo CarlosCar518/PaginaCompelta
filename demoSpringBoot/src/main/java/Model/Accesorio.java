@@ -3,13 +3,17 @@ package Model;
 public class Accesorio {
     public int id;
     public String nombre;
-    public int precio;
+    public int precioUnitario;
     public int cantidad;
+
+
+    public Accesorio() {
+    }
 
     public Accesorio(int id, String nombre, int precio, int cantidad) {
         this.id = id;
         this.nombre = nombre;
-        this.precio = precio;
+        this.precioUnitario = precio;
         this.cantidad = cantidad;
     }
 
@@ -29,12 +33,12 @@ public class Accesorio {
         this.nombre = nombre;
     }
 
-    public int getPrecio() {
-        return precio;
+    public int getPrecioUnitario() {
+        return precioUnitario;
     }
 
-    public void setPrecio(int precio) {
-        this.precio = precio;
+    public void setPrecioUnitario(int precioUnitario) {
+        this.precioUnitario = precioUnitario;
     }
 
     public int getCantidad() {
