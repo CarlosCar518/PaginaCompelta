@@ -3,7 +3,6 @@ package org.example.demospringboot;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.MediaType;
@@ -59,14 +58,14 @@ public class DemoSpringBootApplication {
             }
         }
 
-        pdfService pdf =  new pdfService();
+        pdfService pdf = new pdfService();
 
         assert mascotaFinal != null;
 
         return ResponseEntity.ok()
                 .header("Content-Disposition", "attachment; filename=recibo.pdf")
                 .contentType(MediaType.APPLICATION_PDF)
-                .body(pdf.createPdf(mascotaFinal,  accesorios));
+                .body(pdf.createPdf(mascotaFinal, accesorios));
     }
 
     public static void main(String[] args) {

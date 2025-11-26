@@ -12,14 +12,14 @@ import java.util.List;
 @Service
 public class dbService {
 
-    private final   JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public dbService(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     public List<Mascota> getMascotas() {
-        return  jdbcTemplate.query("SELECT * FROM animales",
+        return jdbcTemplate.query("SELECT * FROM animales",
                 (rs, rowNum) -> new Mascota(
                         rs.getInt("id"),
                         rs.getString("nombre"),
@@ -27,10 +27,9 @@ public class dbService {
                 ));
     }
 
-
     public List<Accesorio> getAccesorios() {
 
-        return  jdbcTemplate.query("SELECT * FROM accesorio",
+        return jdbcTemplate.query("SELECT * FROM accesorio",
                 (rs, rowNum) -> new Accesorio(
                         rs.getInt("id"),
                         rs.getString("nombre"),
@@ -38,7 +37,6 @@ public class dbService {
                         rs.getInt("cantidad")
                 ));
     }
-
 
     public void addMascota(Mascota mascota) {
         jdbcTemplate.update(
